@@ -13,6 +13,11 @@ A library for reading the [PST mailstore file format.](http://msdn.microsoft.com
   The LTP layer provides the interface for the messaging layer to access properties and variable arrays of content.  The base of the LTP layer is a heap which can be stored on a node (heap-on-node or HN).  On the HN, yet another B-tree (B-tree-on-heap or BTH) is implemented and is used to store values on the HN using keys.  The BTH (can be thought of just as a heap) is used to store Property Contexts (PCs) and Table Contexts (TCs).  
   
   The messaging layer uses the LTP layer to represent folder hierarchies and the messages that exist in a give folder.
+  
+## Installation
+```ps
+Install-Package PSTParse
+```
 
 ## Usage
 
