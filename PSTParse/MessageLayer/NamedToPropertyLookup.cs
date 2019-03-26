@@ -1,38 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using PSTParse.ListsTablesPropertiesLayer;
-using PSTParse.NodeDatabaseLayer;
 
 namespace PSTParse.MessageLayer
 {
     public class NamedToPropertyLookup
     {
-        public static ulong NODE_ID = 0x61;
+        private const ulong NodeId = 0x61;
 
-        public PropertyContext PC;
-        public Dictionary<ushort, NAMEID> Lookup; 
+        public PropertyContext PC { get; set; }
+        public Dictionary<ushort, NAMEID> Lookup { get; set; }
 
-        internal byte[] _GUIDs;
-        internal byte[] _entries;
-        internal byte[] _string;
-
-        
+        internal byte[] GUIDs { get; set; }
+        internal byte[] Entries { get; set; }
+        internal byte[] String { get; set; }
 
         public NamedToPropertyLookup(PSTFile pst)
         {
-            
-            this.PC = new PropertyContext(NamedToPropertyLookup.NODE_ID, pst);
-            this._GUIDs = this.PC.Properties[(MessageProperty)0x0002].Data;
-            this._entries = this.PC.Properties[(MessageProperty)0x0003].Data;
-            this._string = this.PC.Properties[(MessageProperty)0x0004].Data;
 
-            this.Lookup = new Dictionary<ushort, NAMEID>();
-            for (int i = 0; i < this._entries.Length; i += 8)
+            PC = new PropertyContext(NodeId, pst);
+            GUIDs = PC.Properties[(MessageProperty)0x0002].Data;
+            Entries = PC.Properties[(MessageProperty)0x0003].Data;
+            String = PC.Properties[(MessageProperty)0x0004].Data;
+
+            Lookup = new Dictionary<ushort, NAMEID>();
+            for (int i = 0; i < Entries.Length; i += 8)
             {
-                var cur = new NAMEID(this._entries, i, this);
-                this.Lookup.Add(cur.PropIndex, cur);
+                var cur = new NAMEID(Entries, i, this);
+                Lookup.Add(cur.PropIndex, cur);
             }
         }
     }

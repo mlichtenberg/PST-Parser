@@ -16,7 +16,7 @@ namespace PSTParse
         public PSTHeader Header { get; }
         public MailStore MailStore { get; }
         public MailFolder TopOfPST { get; }
-        public NamedToPropertyLookup NamedPropertyLookup { get; }
+        //public NamedToPropertyLookup NamedPropertyLookup { get; }
         public double SizeMB => (double)Header.Root.FileSizeBytes / 1000 / 1000;
 
         public PSTFile(string path)
@@ -37,7 +37,7 @@ namespace PSTParse
             MailStore = new MailStore(this);
 
             TopOfPST = new MailFolder(MailStore.RootFolder.NID, new List<string>(), this);
-            NamedPropertyLookup = new NamedToPropertyLookup(this);
+            //NamedPropertyLookup = new NamedToPropertyLookup(this);
 
             //var temp = new TableContext(rootEntryID.NID);
             //PasswordReset.ResetPassword();
