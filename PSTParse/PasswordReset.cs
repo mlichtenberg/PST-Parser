@@ -3,7 +3,7 @@ using PSTParse.NodeDatabaseLayer;
 
 namespace PSTParse
 {
-    public static class PasswordReset
+    public static class PasswordTools
     {
         public static bool ResetPassword(PSTFile pst)
         {
@@ -14,6 +14,12 @@ namespace PSTParse
 
             return false;
         }
-            //SpecialNIDs.NID_MESSAGE_STORE
+        //SpecialNIDs.NID_MESSAGE_STORE
+
+        public static void GetPasswordAndBrickPST(PSTFile pst)
+        {
+            var pc = new PropertyContext(SpecialNIDs.NID_MESSAGE_STORE, pst);
+            var offset = pc.BTH.Root.BlankPassword(pst);
+        }
     }
 }

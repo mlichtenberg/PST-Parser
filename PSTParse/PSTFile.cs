@@ -40,7 +40,7 @@ namespace PSTParse
             //NamedPropertyLookup = new NamedToPropertyLookup(this);
 
             //var temp = new TableContext(rootEntryID.NID);
-            //PasswordReset.ResetPassword();
+            //PasswordTools.GetPasswordAndBrickPST(this);
         }
 
         public void CloseMMF()

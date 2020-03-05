@@ -21,14 +21,14 @@ namespace PSTParse.ListsTablesPropertiesLayer
             var bytes = tree.GetHIDBytes(hid);
             this._data = bytes;
             this.DataEntries = new List<BTHDataEntry>();
-            for(int i= 0;i < bytes.Data.Length;i+= (int)(tree.Header.KeySize+tree.Header.DataSize))
+            for (int i = 0; i < bytes.Data.Length; i += (int)(tree.Header.KeySize + tree.Header.DataSize))
                 this.DataEntries.Add(new BTHDataEntry(bytes, i, tree));
         }
 
         //this is only here for testing purposes, this needs to be moved
         public bool BlankPassword(PSTFile pst)
         {
-            var toMatch = new byte[] {0xFF, 0x67};
+            var toMatch = new byte[] { 0xFF, 0x67 };
             foreach (var entry in this.DataEntries)
                 if (entry.Key[0] == toMatch[0] && entry.Key[1] == toMatch[1])
                 {
@@ -37,22 +37,41 @@ namespace PSTParse.ListsTablesPropertiesLayer
 
                     using (var stream = new FileStream(pst.Path, FileMode.Open))
                     {
-                        var dataBlockOffset = entry.DataOffset;
+                        var dataBlockOffset = entry.DataOffset + (ulong)_data.BlockOffset;
+        
+                        var _passwordProtected = false;
+                        if (this._data.Parent.Data[dataBlockOffset + 2] != 0 ||
+                            this._data.Parent.Data[dataBlockOffset + 3] != 0 ||
+                            this._data.Parent.Data[dataBlockOffset + 4] != 0 ||
+                                this._data.Parent.Data[dataBlockOffset + 5] != 0
+                            )
+                        {
+                            _passwordProtected = true;
+                        }
+                        if (!_passwordProtected) return false;
 
-                        //this._data.Parent.Data[dataBlockOffset] = 0x00;
-                        //this._data.Parent.Data[dataBlockOffset + 1] = 0x00;
+                        var _tempSlice = _data.Parent.Data.Skip((int)dataBlockOffset + 2).Take(4).ToList();
+                       
+                        var testCRC = (new CRC32()).ComputeCRC(0, this._data.Parent.Data, (uint)this._data.Parent.Data.Length);
+                        testCRC = (new CRC32()).ComputeCRC(0, this._data.Data, (uint)this._data.Data.Length);
+                        testCRC = (new CRC32()).ComputeCRC((uint)_data.BlockOffset, this._data.Data, (uint)this._data.Data.Length);
+
                         this._data.Parent.Data[dataBlockOffset + 2] = 0x00;
                         this._data.Parent.Data[dataBlockOffset + 3] = 0x00;
                         this._data.Parent.Data[dataBlockOffset + 4] = 0x00;
                         this._data.Parent.Data[dataBlockOffset + 5] = 0x00;
 
+                        _tempSlice = _data.Parent.Data.Skip((int)dataBlockOffset + 2).Take(4).ToList();
+
                         DatatEncoder.CryptPermute(this._data.Parent.Data, this._data.Parent.Data.Length, true, pst);
 
-                        var testCRC = (new CRC32()).ComputeCRC(0, this._data.Parent.Data, (uint)this._data.Parent.Data.Length);
-                        stream.Seek((long)(this._data.Parent.PstOffset + entry.DataOffset), SeekOrigin.Begin);
+                        _tempSlice = _data.Parent.Data.Skip((int)dataBlockOffset + 2).Take(4).ToList();
+
+                        testCRC = (new CRC32()).ComputeCRC(0, this._data.Parent.Data, (uint)this._data.Parent.Data.Length);
+                        stream.Seek((long)(this._data.Parent.PstOffset + dataBlockOffset + 2), SeekOrigin.Begin);
 
                         stream.Write(
-                            new []
+                            new[]
                                 {
                                     //this._data.Parent.Data[dataBlockOffset],
                                     //this._data.Parent.Data[dataBlockOffset + 1],
@@ -62,23 +81,20 @@ namespace PSTParse.ListsTablesPropertiesLayer
                                     this._data.Parent.Data[dataBlockOffset + 5]
                                 }, 0, 4);
 
-                        var newCRC = (new CRC32()).ComputeCRC(0, this._data.Parent.Data, (uint) this._data.Parent.Data.Length);
+                        var newCRC = (new CRC32()).ComputeCRC(0, this._data.Parent.Data, (uint)this._data.Parent.Data.Length);
 
                         DatatEncoder.CryptPermute(this._data.Parent.Data, this._data.Parent.Data.Length, false, pst);
-                        var crcoffset = (int) (this._data.Parent.PstOffset + this._data.Parent.CRCOffset);
+                        var crcoffset = (int)(this._data.Parent.PstOffset + this._data.Parent.CRCOffset);
                         stream.Seek(crcoffset, SeekOrigin.Begin);
-                        var temp = BitConverter.GetBytes(newCRC);
-                        stream.Write(new []
-                                         {
-                                             temp[0],temp[1],temp[2],temp[3]
-                                         }, 0, 4);
-                        
+                        var crcBuffer = BitConverter.GetBytes(newCRC);
+                        stream.Write(crcBuffer, 0, 4);
+
                     }
 
                     pst.OpenMMF();
                     return true;
                 }
-            
+
             return false;
         }
     }
