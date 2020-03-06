@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using static PSTParse.PSTHeader;
 
 namespace PSTParse.NodeDatabaseLayer
 {
@@ -107,11 +108,10 @@ namespace PSTParse.NodeDatabaseLayer
 237, 154, 100, 63, 193, 108, 249, 236
 };
 
-        public static void CryptPermute(byte[] pv, int cb, bool fEncrypt, PSTFile pst)
+        public static void CryptPermute(byte[] pv, int cb, bool fEncrypt, BlockEncoding blockEncoding)
         {
-            if (pst.Header.EncodingAlgotihm == PSTHeader.BlockEncoding.NONE)
-                return;
-            if (pst.Header.EncodingAlgotihm == PSTHeader.BlockEncoding.PERMUTE)
+            if (blockEncoding == BlockEncoding.NONE) return;
+            if (blockEncoding == BlockEncoding.PERMUTE)
             {
                 int idx = (fEncrypt ? 0 : 512);
                 int temp = 0;

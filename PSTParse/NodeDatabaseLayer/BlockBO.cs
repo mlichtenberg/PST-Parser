@@ -210,7 +210,7 @@ namespace PSTParse.NodeDatabaseLayer
             for (int i = 0; i < dataBlocks.Count; i++)
             {
                 var temp = dataBlocks[i].Data;
-                DatatEncoder.CryptPermute(temp, temp.Length, false, pst);
+                DatatEncoder.CryptPermute(temp, temp.Length, false, pst.Header.EncodingAlgotihm);
             }
             return dataBlocks;
         }

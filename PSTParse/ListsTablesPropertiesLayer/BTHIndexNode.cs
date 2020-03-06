@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PSTParse.NodeDatabaseLayer;
+﻿using System.Collections.Generic;
 
 namespace PSTParse.ListsTablesPropertiesLayer
 {
@@ -13,7 +9,7 @@ namespace PSTParse.ListsTablesPropertiesLayer
 
         public List<BTHIndexEntry> Entries;
         public List<BTHIndexNode> Children;
-        public BTHDataNode Data; 
+        public BTHDataNode Data;
 
         public BTHIndexNode(HID hid, BTH tree, int level)
         {
@@ -21,7 +17,7 @@ namespace PSTParse.ListsTablesPropertiesLayer
             this.HID = hid;
             if (hid.hidBlockIndex == 0 && hid.hidIndex == 0)
                 return;
-            
+
             this.Entries = new List<BTHIndexEntry>();
 
             if (level == 0)
@@ -33,29 +29,17 @@ namespace PSTParse.ListsTablesPropertiesLayer
                 this.DataChildren = new List<BTHDataNode>();
                 foreach(var entry in this.Entries)
                     this.DataChildren.Add(new BTHDataNode(entry.HID, tree));*/
-            } else
+            }
+            else
             {
                 var bytes = tree.GetHIDBytes(hid);
                 for (int i = 0; i < bytes.Data.Length; i += (int)tree.Header.KeySize + 4)
                     this.Entries.Add(new BTHIndexEntry(bytes.Data, i, tree.Header));
                 this.Children = new List<BTHIndexNode>();
-                foreach(var entry in this.Entries)
+                foreach (var entry in this.Entries)
                     this.Children.Add(new BTHIndexNode(entry.HID, tree, level - 1));
             }
 
-        }
-
-        public bool BlankPassword(PSTFile pst)
-        {
-            if (this.Data != null)
-                return this.Data.BlankPassword(pst);
-
-            foreach (var child in Children)
-                child.BlankPassword(pst);
-                /*if (child.BlankPassword(Data) != null)
-                    return child.BlankPassword(Data);*/
-
-            return false;
         }
     }
 }

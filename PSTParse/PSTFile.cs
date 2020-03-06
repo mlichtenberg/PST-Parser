@@ -4,6 +4,9 @@ using System.IO;
 using System.IO.MemoryMappedFiles;
 using PSTParse.MessageLayer;
 using PSTParse.NodeDatabaseLayer;
+using PSTParse.ListsTablesPropertiesLayer;
+using System.Linq;
+using PSTParse.Utilities;
 
 namespace PSTParse
 {
@@ -40,7 +43,70 @@ namespace PSTParse
             //NamedPropertyLookup = new NamedToPropertyLookup(this);
 
             //var temp = new TableContext(rootEntryID.NID);
-            //PasswordTools.GetPasswordAndBrickPST(this);
+        }
+
+        public bool IsPasswordProtected()
+        {
+            var messageStore = new PropertyContext(SpecialNIDs.NID_MESSAGE_STORE, this);
+            var rootDataNode = messageStore.BTH.Root.Data;
+            const int unknown2Bytes = 2;
+            var passwordKey = new byte[] { 0xFF, 0x67 };
+            foreach (var entry in rootDataNode.DataEntries)
+            {
+                if (entry.Key.SequenceEqual(passwordKey))
+                {
+                    var dataBlockOffset = (int)entry.DataOffset + (int)rootDataNode.Data.BlockOffset + unknown2Bytes;
+                    var slice = rootDataNode.Data.Parent.Data.Skip(dataBlockOffset).Take(4).ToList();
+                    var isProtected = !slice.SequenceEqual(new byte[] { 0, 0, 0, 0 });
+                    return isProtected;
+                }
+            }
+            return false;
+        }
+
+        public bool RemovePassword()
+        {
+            var messageStore = new PropertyContext(SpecialNIDs.NID_MESSAGE_STORE, this);
+            var rootDataNode = messageStore.BTH.Root.Data;
+            const int unknown2Bytes = 2;
+            var passwordKey = new byte[] { 0xFF, 0x67 };
+            foreach (var entry in rootDataNode.DataEntries)
+            {
+                if (entry.Key.SequenceEqual(passwordKey))
+                {
+                    var dataBlockOffset = (int)entry.DataOffset + (int)rootDataNode.Data.BlockOffset + unknown2Bytes;
+                    var slice = rootDataNode.Data.Parent.Data.Skip(dataBlockOffset).Take(4).ToList();
+                    var isProtected = !slice.SequenceEqual(new byte[] { 0, 0, 0, 0 });
+                    if (!isProtected) return false;
+
+                    CloseMMF();
+
+                    using (var stream = new FileStream(Path, FileMode.Open))
+                    {
+                        rootDataNode.Data.Parent.Data[dataBlockOffset] = 0x00;
+                        rootDataNode.Data.Parent.Data[dataBlockOffset + 1] = 0x00;
+                        rootDataNode.Data.Parent.Data[dataBlockOffset + 2] = 0x00;
+                        rootDataNode.Data.Parent.Data[dataBlockOffset + 3] = 0x00;
+
+                        DatatEncoder.CryptPermute(rootDataNode.Data.Parent.Data, rootDataNode.Data.Parent.Data.Length, true, Header.EncodingAlgotihm);
+
+                        // seems to always be [65, 65, 65, 65]
+                        var permutationBytes = rootDataNode.Data.Parent.Data.Skip(dataBlockOffset).Take(4).ToArray();
+                        stream.Seek((long)rootDataNode.Data.Parent.PstOffset + dataBlockOffset, SeekOrigin.Begin);
+                        stream.Write(permutationBytes, 0, 4);
+
+                        var newCRC = new CRC32().ComputeCRC(0, rootDataNode.Data.Parent.Data, (uint)rootDataNode.Data.Parent.Data.Length);
+                        DatatEncoder.CryptPermute(rootDataNode.Data.Parent.Data, rootDataNode.Data.Parent.Data.Length, false, Header.EncodingAlgotihm);
+                        var crcoffset = (long)(rootDataNode.Data.Parent.PstOffset + rootDataNode.Data.Parent.CRCOffset);
+                        stream.Seek(crcoffset, SeekOrigin.Begin);
+                        var crcBuffer = BitConverter.GetBytes(newCRC);
+                        stream.Write(crcBuffer, 0, 4);
+                    }
+                    OpenMMF();
+                    return true;
+                }
+            }
+            return false;
         }
 
         public void CloseMMF()

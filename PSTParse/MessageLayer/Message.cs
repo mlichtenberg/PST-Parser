@@ -31,7 +31,7 @@ namespace PSTParse.MessageLayer
 
         public string Subject { get; set; }
         public string SubjectPrefix { get; set; }
-        public Importance Imporance { get; set; }
+        public Importance Importance { get; set; }
         public Sensitivity Sensitivity { get; set; }
         public DateTime LastSaved { get; set; }
         public DateTime ClientSubmitTime { get; set; }
@@ -90,7 +90,7 @@ namespace PSTParse.MessageLayer
                 switch (prop.Key)
                 {
                     case MessageProperty.Importance:
-                        Imporance = (Importance)BitConverter.ToInt16(prop.Value.Data, 0);
+                        Importance = (Importance)BitConverter.ToInt16(prop.Value.Data, 0);
                         break;
                     case MessageProperty.Sensitivity:
                         Sensitivity = (Sensitivity)BitConverter.ToInt16(prop.Value.Data, 0);

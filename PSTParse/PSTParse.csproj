@@ -112,7 +112,6 @@
     <Compile Include="NodeDatabaseLayer\SubNodeDataDTO.cs" />
     <Compile Include="NodeDatabaseLayer\XBLOCK.cs" />
     <Compile Include="NodeDatabaseLayer\XXBLOCK.cs" />
-    <Compile Include="PasswordReset.cs" />
     <Compile Include="PSTEnums.cs" />
     <Compile Include="PSTFile.cs" />
     <Compile Include="PSTHeader.cs" />
