@@ -24,7 +24,6 @@ namespace PSTParse
 
                 var ver = mmfView.ReadInt16(10);
 
-
                 IsANSI = ver == 14 || ver == 15;
                 IsUNICODE = ver == 23;
 

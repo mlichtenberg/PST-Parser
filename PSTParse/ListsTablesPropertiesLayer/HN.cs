@@ -3,6 +3,9 @@ using PSTParse.NodeDatabaseLayer;
 
 namespace PSTParse.ListsTablesPropertiesLayer
 {
+    /// <summary>
+    /// Heap on Node (HN)
+    /// </summary>
     public class HN
     {
         // why unused

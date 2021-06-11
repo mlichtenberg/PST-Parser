@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace PSTParse.NodeDatabaseLayer
 {
     public class BID
     {
-        public ulong BlockID;
+        public ulong BlockID { get; }
 
-        public BID(byte[] bytes, int offset=0)
+        public BID(byte[] bytes, int offset = 0)
         {
-            this.BlockID = BitConverter.ToUInt64(bytes, offset) & 0xfffffffffffffffe;
+            BlockID = BitConverter.ToUInt64(bytes, offset) & 0xfffffffffffffffe;
         }
     }
 }

@@ -2,21 +2,26 @@
 
 namespace PSTParse.NodeDatabaseLayer
 {
+    /// <summary>
+    /// The BREF is a record that maps a BID to its absolute file offset location.
+    /// </summary>
     public class BREF
     {
-        public UInt64 BID;
-        public UInt64 IB;
-
-        public bool IsInternal
-        {
-            get { return (this.BID & 0x02) > 0; }
-        }
+        /// <summary>
+        /// Block ID (BID)
+        /// </summary>
+        public ulong BID { get; }
+        /// <summary>
+        /// Byte Index (IB)
+        /// </summary>
+        public ulong IB { get; }
+        public bool IsInternal => (BID & 0x02) > 0;
 
         public BREF(byte[] bref, int offset = 0)
         {
-            this.BID = BitConverter.ToUInt64(bref, offset);
-            this.BID = this.BID & 0xfffffffffffffffe;
-            this.IB = BitConverter.ToUInt64(bref, offset + 8);
+            BID = BitConverter.ToUInt64(bref, offset);
+            BID = BID & 0xfffffffffffffffe;
+            IB = BitConverter.ToUInt64(bref, offset + 8);
 
         }
     }

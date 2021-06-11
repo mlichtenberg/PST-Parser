@@ -4,9 +4,13 @@ namespace PSTParse.NodeDatabaseLayer
 {
     public enum PageType
     {
-        //blockBTree
+        /// <summary>
+        /// Block B Tree
+        /// </summary>
         BBT = 0x80,
-        //nodeBTree
+        /// <summary>
+        /// Node B Tree
+        /// </summary>
         NBT = 0x81,
         FreeMap = 0x82,
         PageMap = 0x83,
@@ -14,6 +18,11 @@ namespace PSTParse.NodeDatabaseLayer
         FreePageMap = 0x85,
         DensityList = 0x86
     }
+
+    /// <summary>
+    /// A PAGETRAILER structure contains information about the page in which it is contained.
+    /// PAGETRAILER structure is present at the very end of each page in a PST file.
+    /// </summary>
     public class PageTrailer
     {
         public PageType PageType { get; set; }
@@ -21,8 +30,8 @@ namespace PSTParse.NodeDatabaseLayer
 
         public PageTrailer(byte[] trailer)
         {
-            this.PageType = (PageType) trailer[0];
-            this.BID = BitConverter.ToUInt64(trailer, 8);
+            PageType = (PageType)trailer[0];
+            BID = BitConverter.ToUInt64(trailer, 8);
         }
     }
 

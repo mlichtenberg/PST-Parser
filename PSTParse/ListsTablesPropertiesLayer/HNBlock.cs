@@ -4,43 +4,44 @@ using PSTParse.Utilities;
 
 namespace PSTParse.ListsTablesPropertiesLayer
 {
+    /// <summary>
+    /// Heap Node Block (HNBlock)
+    /// </summary>
     public class HNBlock
     {
-        public HNHDR Header;
-        public HNPAGEHDR PageHeader;
-        public HNBITMAPHDR BitMapPageHeader;
-
-        public HNPAGEMAP PageMap;
-
-        public UInt16 PageMapOffset;
-
-        private BlockDataDTO _bytes;
+        public HNHDR Header { get; }
+        public HNPAGEHDR PageHeader { get; }
+        public HNBITMAPHDR BitMapPageHeader { get; }
+        public HNPAGEMAP PageMap { get; }
+        public ushort PageMapOffset { get; }
+        private BlockDataDTO _bytes { get; }
 
         public HNBlock(int blockIndex, BlockDataDTO bytes)
         {
-            this._bytes = bytes;
+            _bytes = bytes;
+            var bytesData = _bytes.Data;
 
-            this.PageMapOffset = BitConverter.ToUInt16(this._bytes.Data, 0);
-            this.PageMap = new HNPAGEMAP(this._bytes.Data, this.PageMapOffset);
+            PageMapOffset = BitConverter.ToUInt16(_bytes.Data, 0);
+            PageMap = new HNPAGEMAP(_bytes.Data, PageMapOffset);
             if (blockIndex == 0)
             {
-                this.Header = new HNHDR(this._bytes.Data);
+                Header = new HNHDR(_bytes.Data);
             } else if (blockIndex % 128 == 8)
             {
-                this.BitMapPageHeader = new HNBITMAPHDR(ref this._bytes.Data);
+                BitMapPageHeader = new HNBITMAPHDR(ref bytesData);
             } else
             {
-                this.PageHeader = new HNPAGEHDR(ref this._bytes.Data);
+                PageHeader = new HNPAGEHDR(ref bytesData);
             }
         }
 
         public HNDataDTO GetAllocation(HID hid)
         {
-            var begOffset = this.PageMap.AllocationTable[(int) hid.hidIndex - 1];
-            var endOffset = this.PageMap.AllocationTable[(int) hid.hidIndex];
+            var begOffset = PageMap.AllocationTable[(int) hid.hidIndex - 1];
+            var endOffset = PageMap.AllocationTable[(int) hid.hidIndex];
             return new HNDataDTO
                        {
-                           Data = this._bytes.Data.RangeSubset(begOffset, endOffset - begOffset),
+                           Data = _bytes.Data.RangeSubset(begOffset, endOffset - begOffset),
                            BlockOffset = begOffset,
                            Parent = _bytes
                        };
@@ -48,9 +49,9 @@ namespace PSTParse.ListsTablesPropertiesLayer
 
         public int GetOffset()
         {
-            if (this.Header != null)
+            if (Header != null)
                 return 12;
-            if (this.PageHeader != null)
+            if (PageHeader != null)
                 return 2;
             return 66;
         }

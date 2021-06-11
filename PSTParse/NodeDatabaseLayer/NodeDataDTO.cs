@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace PSTParse.NodeDatabaseLayer
 {
     public class NodeDataDTO
     {
-        public List<BlockDataDTO> NodeData; 
-        public Dictionary<ulong, NodeDataDTO> SubNodeData;
+        public List<BlockDataDTO> NodeData { get; set; }
+        public Dictionary<ulong, NodeDataDTO> SubNodeData { get; set; }
     }
 }

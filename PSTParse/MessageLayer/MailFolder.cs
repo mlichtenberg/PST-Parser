@@ -27,10 +27,10 @@ namespace PSTParse
             Path = path;
             var pcNID = ((nid >> 5) << 5) | 0x02;
             PC = new PropertyContext(pcNID, pst);
-            DisplayName = Encoding.Unicode.GetString(PC.Properties[(MessageProperty)0x3001].Data);
+            DisplayName = Encoding.Unicode.GetString(PC.Properties[MessageProperty.DisplayName].Data);
 
 
-            PC.Properties.TryGetValue((MessageProperty)0x3613, out ExchangeProperty containerClassProperty);
+            PC.Properties.TryGetValue(MessageProperty.ContainerClass, out ExchangeProperty containerClassProperty);
             ContainerClass = containerClassProperty == null ? "" : Encoding.Unicode.GetString(containerClassProperty.Data);
 
             Path = new List<string>(path) { DisplayName };

@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace PSTParse.NodeDatabaseLayer
+﻿namespace PSTParse.NodeDatabaseLayer
 {
     public class BlockDataDTO
     {
-        public BlockDataDTO Parent;
-        public byte[] Data;
-        public ulong PstOffset;
-        public uint CRC32;
-        public uint CRCOffset;
-        public BBTENTRY BBTEntry;
+        public BlockDataDTO Parent { get; set; }
+        public byte[] Data { get; set; }
+        public ulong PstOffset { get; set; }
+        public uint CRC32 { get; set; }
+        public uint CRCOffset { get; set; }
+        public BBTENTRY BBTEntry { get; set; }
     }
 }

@@ -6,12 +6,12 @@ namespace PSTParse.ListsTablesPropertiesLayer
 {
     public class TableContext
     {
-        public TCINFOHEADER TCHeader;
-        public HN HeapNode;
-        public NodeDataDTO NodeData;
-        public BTH RowIndexBTH;
-        public Dictionary<uint, uint> ReverseRowIndex;
-        public TCRowMatrix RowMatrix;
+        public TCINFOHEADER TCHeader { get; }
+        public HN HeapNode { get; }
+        public NodeDataDTO NodeData { get; }
+        public BTH RowIndexBTH { get; }
+        public Dictionary<uint, uint> ReverseRowIndex { get; }
+        public TCRowMatrix RowMatrix { get; }
 
         public TableContext(ulong nid, PSTFile pst)
         {

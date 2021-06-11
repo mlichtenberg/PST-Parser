@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 namespace PSTParse.ListsTablesPropertiesLayer
 {
+    /// <summary>
+    /// Btree on Heap (BTH)
+    /// </summary>
     public class BTH
     {
         public HN HeapNode { get; set; }
@@ -53,6 +56,7 @@ namespace PSTParse.ListsTablesPropertiesLayer
             return HeapNode.GetHIDBytes(hid);
         }
 
+        // todo: this might be getting called twice
         public Dictionary<MessageProperty, ExchangeProperty> GetExchangeProperties()
         {
             var ret = new Dictionary<MessageProperty, ExchangeProperty>();
