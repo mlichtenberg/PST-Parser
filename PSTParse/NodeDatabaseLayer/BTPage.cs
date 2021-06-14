@@ -5,11 +5,20 @@ using System.Collections.Generic;
 namespace PSTParse.NodeDatabaseLayer
 {
     /// <summary>
-    /// A BTPAGE structure implements a generic BTree using 512-byte pages.
+    /// B-Tree Page (BTPage)<br/>
+    /// Implements a generic BTree using 512-byte pages.
     /// </summary>
     public class BTPage
     {
+        /// <summary>
+        /// cEnt<br/>
+        /// The number of BTree entries stored in the page data.
+        /// </summary>
         private readonly int _numEntries;
+        /// <summary>
+        /// cEntMax<br/>
+        /// The maximum number of entries that can fit inside the page data.
+        /// </summary>
         private readonly int _maxEntries;
         private readonly int _cbEnt;
         private readonly int _cLevel;

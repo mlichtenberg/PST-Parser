@@ -3,7 +3,8 @@
 namespace PSTParse.NodeDatabaseLayer
 {
     /// <summary>
-    /// The BREF is a record that maps a BID to its absolute file offset location.
+    /// Block Reference (BREF)<br/>
+    /// A record that maps a BID to its absolute file offset location.
     /// </summary>
     public class BREF
     {
@@ -12,7 +13,8 @@ namespace PSTParse.NodeDatabaseLayer
         /// </summary>
         public ulong BID { get; }
         /// <summary>
-        /// Byte Index (IB)
+        /// Byte Index (IB) 64 bits.<br/>
+        /// An absolute offset within the PST file with respect to the beginning of the file.
         /// </summary>
         public ulong IB { get; }
         public bool IsInternal => (BID & 0x02) > 0;

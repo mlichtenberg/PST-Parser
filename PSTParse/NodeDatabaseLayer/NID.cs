@@ -1,5 +1,8 @@
 ﻿namespace PSTParse.NodeDatabaseLayer
 {
+    /// <summary>
+    /// Node ID (NID)
+    /// </summary>
     public class NID
     {
         public enum NodeType

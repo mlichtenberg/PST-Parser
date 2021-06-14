@@ -2,6 +2,9 @@
 
 namespace PSTParse.NodeDatabaseLayer
 {
+    /// <summary>
+    /// Block ID (BID)
+    /// </summary>
     public class BID
     {
         public ulong BlockID { get; }

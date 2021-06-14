@@ -10,7 +10,8 @@ namespace PSTParse.NodeDatabaseLayer
         public static NodeDataDTO GetNodeData(ulong nid, PSTFile pst)
         {
             var nodeBIDs = pst.GetNodeBIDs(nid);
-            var mainData = GetBBTEntryData(pst.GetBlockBBTEntry(nodeBIDs.Item1), pst);
+            var blockBBT_Entry = pst.GetBlockBBTEntry(nodeBIDs.Item1);
+            var mainData = GetBBTEntryData(blockBBT_Entry, pst);
             var subNodeData = new Dictionary<ulong, NodeDataDTO>();
 
             if (nodeBIDs.Item2 != 0)
@@ -71,7 +72,10 @@ namespace PSTParse.NodeDatabaseLayer
             return ret;
         }
 
-        //gets all the data for an SL block.  an SL block points directly to all the immediate subnodes
+        /// <summary>
+        /// Gets all the data for an SL block.<br/>
+        /// An SL block points directly to all the immediate subnodes
+        /// </summary>
         private static Dictionary<ulong, NodeDataDTO> GetSLBlockData(SLBLOCK slblock, PSTFile pst, int take = int.MaxValue)
         {
             var ret = new Dictionary<ulong, NodeDataDTO>();
@@ -114,8 +118,10 @@ namespace PSTParse.NodeDatabaseLayer
             return new NodeDataDTO { NodeData = mainData, SubNodeData = null };
         }
 
-        //for a given bbt entry, retrieve the raw bytes associated with the BID
-        //this includes retrieving data trees via xblocks
+        /// <summary>
+        /// For a given bbt entry, retrieve the raw bytes associated with the BID.<br/>
+        /// This includes retrieving data trees via xblocks.
+        /// </summary>
         public static List<BlockDataDTO> GetBBTEntryData(BBTENTRY entry, PSTFile pst)
         {
             if (entry == null)

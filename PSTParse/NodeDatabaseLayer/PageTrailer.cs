@@ -20,12 +20,18 @@ namespace PSTParse.NodeDatabaseLayer
     }
 
     /// <summary>
-    /// A PAGETRAILER structure contains information about the page in which it is contained.
-    /// PAGETRAILER structure is present at the very end of each page in a PST file.
+    /// A PAGETRAILER structure contains information about the page in which it is contained.<br/>
+    /// It is present at the very end of each page in a PST file.
     /// </summary>
     public class PageTrailer
     {
+        /// <summary>
+        /// The type of data contained within the page.
+        /// </summary>
         public PageType PageType { get; set; }
+        /// <summary>
+        /// The BID of the page's block.
+        /// </summary>
         public ulong BID { get; set; }
 
         public PageTrailer(byte[] trailer)
@@ -34,5 +40,4 @@ namespace PSTParse.NodeDatabaseLayer
             BID = BitConverter.ToUInt64(trailer, 8);
         }
     }
-
 }

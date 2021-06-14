@@ -4,7 +4,7 @@ using System.IO.MemoryMappedFiles;
 using System.Linq;
 using System.Text;
 
-namespace PSTParse.PSTBTree
+namespace PSTParse.NodeDatabaseLayer
 {
     /*
     public class PSTBTreeNode

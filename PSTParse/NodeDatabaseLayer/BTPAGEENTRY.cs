@@ -1,6 +1,4 @@
 ﻿namespace PSTParse.NodeDatabaseLayer
 {
-    public interface BTPAGEENTRY
-    {
-    }
+    public interface BTPAGEENTRY { }
 }

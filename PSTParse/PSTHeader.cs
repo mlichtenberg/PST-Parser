@@ -6,11 +6,10 @@ namespace PSTParse
 {
     public class PSTHeader
     {
-        public string DWMagic { get; private set; }
-        public bool IsANSI { get; }
-        public bool IsUNICODE { get; }
-        public NodeDatabaseLayer.PSTBTree NodeBT { get; private set; }
-        public NodeDatabaseLayer.PSTBTree BlockBT { get; private set; }
+        public string DWMagic { get; }
+        public PstVersion Version { get; }
+        public PSTBTree NodeBT { get; private set; }
+        public PSTBTree BlockBT { get; private set; }
         public BlockEncoding EncodingAlgotihm { get; private set; }
         public PSTRoot Root { get; }
 
@@ -23,32 +22,31 @@ namespace PSTParse
                 DWMagic = Encoding.Default.GetString(dwMagicBuffer);
 
                 var ver = mmfView.ReadInt16(10);
-
-                IsANSI = ver == 14 || ver == 15;
-                IsUNICODE = ver == 23;
-
-                if (IsUNICODE)
+                Version = ver == 23 ? PstVersion.UNICODE : PstVersion.ANSI;
+                if (Version == PstVersion.ANSI)
                 {
-                    var fileSizeBuffer = new byte[8];
-                    mmfView.ReadArray(184, fileSizeBuffer, 0, 8);
-                    var fileSizeBytes = BitConverter.ToUInt64(fileSizeBuffer, 0);
-                    Root = new PSTRoot(fileSizeBytes);
-
-                    var sentinel = mmfView.ReadByte(512);
-                    var cryptMethod = (uint)mmfView.ReadByte(513);
-
-                    EncodingAlgotihm = (BlockEncoding)cryptMethod;
-
-                    var bytes = new byte[16];
-                    mmfView.ReadArray(216, bytes, 0, 16);
-                    var nbt_bref = new BREF(bytes);
-
-                    mmfView.ReadArray(232, bytes, 0, 16);
-                    var bbt_bref = new BREF(bytes);
-
-                    NodeBT = new NodeDatabaseLayer.PSTBTree(nbt_bref, pst);
-                    BlockBT = new NodeDatabaseLayer.PSTBTree(bbt_bref, pst);
+                    throw new Exception("ANSI encoded PST not supported");
                 }
+
+                var rootBuffer = new byte[72];
+                mmfView.ReadArray(180, rootBuffer, 0, rootBuffer.Length);
+
+                Root = new PSTRoot(rootBuffer);
+
+                var sentinel = mmfView.ReadByte(512);
+                var cryptMethod = (uint)mmfView.ReadByte(513);
+
+                EncodingAlgotihm = (BlockEncoding)cryptMethod;
+
+                var bytes = new byte[16];
+                mmfView.ReadArray(216, bytes, 0, 16);
+                var nbt_bref = new BREF(bytes);
+
+                mmfView.ReadArray(232, bytes, 0, 16);
+                var bbt_bref = new BREF(bytes);
+
+                NodeBT = new PSTBTree(nbt_bref, pst);
+                BlockBT = new PSTBTree(bbt_bref, pst);
             }
         }
 
@@ -57,6 +55,12 @@ namespace PSTParse
             NONE = 0,
             PERMUTE = 1,
             CYCLIC = 2
+        }
+
+        public enum PstVersion
+        {
+            ANSI,
+            UNICODE,
         }
     }
 }
