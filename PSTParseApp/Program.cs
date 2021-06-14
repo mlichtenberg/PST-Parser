@@ -12,12 +12,12 @@ namespace PSTParseApp
         {
             var sw = new Stopwatch();
             sw.Start();
-            var pstPath = @"C:\localdocs\testPsts\trg.pst";
+            var pstPath = @"single_item.pst";
             var fileInfo = new FileInfo(pstPath);
             var pstSizeGigabytes = ((double)fileInfo.Length / 1000 / 1000 / 1000).ToString("0.000");
             using (var file = new PSTFile(pstPath))
             {
-                Debug.Assert((double)fileInfo.Length / 1000 / 1000 / 1000 == file.SizeMB / 1000);
+                Debug.Assert((ulong)fileInfo.Length == file.Size);
                 //Console.WriteLine("Magic value: " + file.Header.DWMagic);
                 //Console.WriteLine("Is Ansi? " + file.Header.IsANSI);
 
@@ -50,6 +50,7 @@ namespace PSTParseApp
                     foreach (var message in curFolder.GetIpmNotes())
                     //foreach (var ipmItem in curFolder.GetIpmItems())
                     {
+                      WriteLine(message.BodyPlainText);
                         totalCount++;
                         currentFolderCount++;
 
@@ -103,7 +104,6 @@ namespace PSTParseApp
                 {
                     WriteLine(line);
                 }
-                Read();
             }
         }
     }
