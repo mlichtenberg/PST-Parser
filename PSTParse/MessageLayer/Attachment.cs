@@ -6,6 +6,11 @@ using PSTParse.ListsTablesPropertiesLayer;
 
 namespace PSTParse.MessageLayer
 {
+    public enum NodeValue
+    {
+        AttachmentTable = 0x671 // 1649
+    }
+
     public enum AttachmentMethod
     {
         NONE = 0x00,

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using static PSTParse.PSTHeader;
+﻿using static PSTParse.PSTHeader;
 
 namespace PSTParse.NodeDatabaseLayer
 {
-    public static class DatatEncoder
+  public static class DatatEncoder
     {
         private static readonly byte[] mpbbCrypt =
 {
