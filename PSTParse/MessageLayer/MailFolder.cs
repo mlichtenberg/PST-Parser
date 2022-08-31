@@ -30,8 +30,10 @@ namespace PSTParse
             DisplayName = Encoding.Unicode.GetString(PC.Properties[(MessageProperty)0x3001].Data);
 
 
-            PC.Properties.TryGetValue((MessageProperty)0x3613, out ExchangeProperty containerClassProperty);
-            ContainerClass = containerClassProperty == null ? "" : Encoding.Unicode.GetString(containerClassProperty.Data);
+            PC.Properties.TryGetValue(MessageProperty.ContainerClass, out ExchangeProperty containerClassProperty);
+            ContainerClass = containerClassProperty?.Data == null
+                ? "" 
+                : Encoding.Unicode.GetString(containerClassProperty.Data);
 
             Path = new List<string>(path) { DisplayName };
 
