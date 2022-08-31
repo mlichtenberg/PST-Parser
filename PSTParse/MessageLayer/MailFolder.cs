@@ -31,7 +31,9 @@ namespace PSTParse
 
 
             PC.Properties.TryGetValue(MessageProperty.ContainerClass, out ExchangeProperty containerClassProperty);
-            ContainerClass = containerClassProperty == null ? "" : Encoding.Unicode.GetString(containerClassProperty.Data);
+            ContainerClass = containerClassProperty?.Data == null
+                ? "" 
+                : Encoding.Unicode.GetString(containerClassProperty.Data);
 
             Path = new List<string>(path) { DisplayName };
 
