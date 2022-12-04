@@ -12,11 +12,13 @@ namespace PSTParseApp
         {
             var sw = new Stopwatch();
             sw.Start();
-            var pstPath = @"single_item.pst";
+            // var pstPath = @"single_item.pst";
+            var pstPath = @"passwordprotectedPST.pst";
             var fileInfo = new FileInfo(pstPath);
             var pstSizeGigabytes = ((double)fileInfo.Length / 1000 / 1000 / 1000).ToString("0.000");
             using (var file = new PSTFile(pstPath))
             {
+                var isProtected = file.IsPasswordProtected();
                 Debug.Assert((ulong)fileInfo.Length == file.Size);
                 //Console.WriteLine("Magic value: " + file.Header.DWMagic);
                 //Console.WriteLine("Is Ansi? " + file.Header.IsANSI);
@@ -50,7 +52,7 @@ namespace PSTParseApp
                     foreach (var message in curFolder.GetIpmNotes())
                     //foreach (var ipmItem in curFolder.GetIpmItems())
                     {
-                      WriteLine(message.BodyPlainText);
+                        WriteLine(message.BodyPlainText);
                         totalCount++;
                         currentFolderCount++;
 
