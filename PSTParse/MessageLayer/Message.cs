@@ -40,6 +40,7 @@ namespace PSTParse.MessageLayer
         public string SenderName { get; set; }
         public string SenderAddress { get; set; }
         public string SenderAddressType { get; set; }
+        public string SenderSMTPAddress { get; set; }
         public DateTime MessageDeliveryTime { get; set; }
         public bool Read { get; set; }
         public bool Unsent { get; set; }
@@ -132,6 +133,9 @@ namespace PSTParse.MessageLayer
                         break;
                     case MessageProperty.SenderAddressType:
                         SenderAddressType = Encoding.Unicode.GetString(prop.Value.Data);
+                        break;
+                    case MessageProperty.SenderSMTPAddress:
+                        SenderSMTPAddress = Encoding.Unicode.GetString(prop.Value.Data);
                         break;
                     case MessageProperty.SenderName:
                         SenderName = Encoding.Unicode.GetString(prop.Value.Data);

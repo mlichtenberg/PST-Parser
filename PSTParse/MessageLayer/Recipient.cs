@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Text;
 using PSTParse.ListsTablesPropertiesLayer;
@@ -22,6 +22,7 @@ namespace PSTParse.MessageLayer
         public EntryID EntryID;
         public string DisplayName;
         public string EmailAddress;
+        public string EmailSMTPAddress;
         public string EmailAddressType;
 
         public Recipient(TCRowMatrixData row)
@@ -54,6 +55,9 @@ namespace PSTParse.MessageLayer
                         break;
                     case MessageProperty.AddressName:
                         EmailAddress = Encoding.Unicode.GetString(data);
+                        break;
+                    case MessageProperty.SMTPAddress:
+                        EmailSMTPAddress = Encoding.Unicode.GetString(data);
                         break;
                     default:
                         break;

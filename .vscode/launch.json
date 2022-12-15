@@ -6,7 +6,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/PSTParseApp/bin/Debug/net70/PSTParseApp.dll",
+      "program": "${workspaceFolder}/PSTParseApp/bin/Debug/net60/PSTParseApp.dll",
       "args": [],
       "cwd": "${workspaceFolder}",
       "console": "internalConsole",
