@@ -1,0 +1,65 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34928.147
+MinimumVisualStudioVersion = 15.0.26124.0
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PSTParse", "PSTParse\PSTParse.csproj", "{03A3E15E-CBB7-4DD7-99D2-CA21ABBF1C71}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PSTExtractor", "PSTExtractor\PSTExtractor.csproj", "{C7CFD804-291F-4E01-AD9D-72C68D3AC5CA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PSTParseSampleApp", "PSTParseSampleApp\PSTParseSampleApp.csproj", "{7E6307FA-16E7-4297-9326-93D41416C7EA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{03A3E15E-CBB7-4DD7-99D2-CA21ABBF1C71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03A3E15E-CBB7-4DD7-99D2-CA21ABBF1C71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03A3E15E-CBB7-4DD7-99D2-CA21ABBF1C71}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{03A3E15E-CBB7-4DD7-99D2-CA21ABBF1C71}.Debug|x64.Build.0 = Debug|Any CPU
+		{03A3E15E-CBB7-4DD7-99D2-CA21ABBF1C71}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{03A3E15E-CBB7-4DD7-99D2-CA21ABBF1C71}.Debug|x86.Build.0 = Debug|Any CPU
+		{03A3E15E-CBB7-4DD7-99D2-CA21ABBF1C71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03A3E15E-CBB7-4DD7-99D2-CA21ABBF1C71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03A3E15E-CBB7-4DD7-99D2-CA21ABBF1C71}.Release|x64.ActiveCfg = Release|Any CPU
+		{03A3E15E-CBB7-4DD7-99D2-CA21ABBF1C71}.Release|x64.Build.0 = Release|Any CPU
+		{03A3E15E-CBB7-4DD7-99D2-CA21ABBF1C71}.Release|x86.ActiveCfg = Release|Any CPU
+		{03A3E15E-CBB7-4DD7-99D2-CA21ABBF1C71}.Release|x86.Build.0 = Release|Any CPU
+		{C7CFD804-291F-4E01-AD9D-72C68D3AC5CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7CFD804-291F-4E01-AD9D-72C68D3AC5CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7CFD804-291F-4E01-AD9D-72C68D3AC5CA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C7CFD804-291F-4E01-AD9D-72C68D3AC5CA}.Debug|x64.Build.0 = Debug|Any CPU
+		{C7CFD804-291F-4E01-AD9D-72C68D3AC5CA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C7CFD804-291F-4E01-AD9D-72C68D3AC5CA}.Debug|x86.Build.0 = Debug|Any CPU
+		{C7CFD804-291F-4E01-AD9D-72C68D3AC5CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7CFD804-291F-4E01-AD9D-72C68D3AC5CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7CFD804-291F-4E01-AD9D-72C68D3AC5CA}.Release|x64.ActiveCfg = Release|Any CPU
+		{C7CFD804-291F-4E01-AD9D-72C68D3AC5CA}.Release|x64.Build.0 = Release|Any CPU
+		{C7CFD804-291F-4E01-AD9D-72C68D3AC5CA}.Release|x86.ActiveCfg = Release|Any CPU
+		{C7CFD804-291F-4E01-AD9D-72C68D3AC5CA}.Release|x86.Build.0 = Release|Any CPU
+		{7E6307FA-16E7-4297-9326-93D41416C7EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E6307FA-16E7-4297-9326-93D41416C7EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E6307FA-16E7-4297-9326-93D41416C7EA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7E6307FA-16E7-4297-9326-93D41416C7EA}.Debug|x64.Build.0 = Debug|Any CPU
+		{7E6307FA-16E7-4297-9326-93D41416C7EA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7E6307FA-16E7-4297-9326-93D41416C7EA}.Debug|x86.Build.0 = Debug|Any CPU
+		{7E6307FA-16E7-4297-9326-93D41416C7EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E6307FA-16E7-4297-9326-93D41416C7EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E6307FA-16E7-4297-9326-93D41416C7EA}.Release|x64.ActiveCfg = Release|Any CPU
+		{7E6307FA-16E7-4297-9326-93D41416C7EA}.Release|x64.Build.0 = Release|Any CPU
+		{7E6307FA-16E7-4297-9326-93D41416C7EA}.Release|x86.ActiveCfg = Release|Any CPU
+		{7E6307FA-16E7-4297-9326-93D41416C7EA}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D8C4278A-79B7-45A5-97A7-07718F3E7B14}
+	EndGlobalSection
+EndGlobal

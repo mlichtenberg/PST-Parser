@@ -40,6 +40,9 @@ obj/
 [Rr]elease*/
 Ankh.NoLoad
 
+# Visual Studio cache/options directory
+.vs/
+
 #MonoDevelop
 *.pidb
 *.userprefs

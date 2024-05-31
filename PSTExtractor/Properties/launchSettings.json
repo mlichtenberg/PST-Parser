@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "PSTExtractor": {
+      "commandName": "Project",
+      "commandLineArgs": ""
+    }
+  }
+}

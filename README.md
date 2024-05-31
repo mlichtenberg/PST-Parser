@@ -1,6 +1,56 @@
-# PST-Parser
+# PSTExtractor
 
-A library for reading the [PST mailstore file format.](http://msdn.microsoft.com/en-us/library/ff385210(v=office.12).aspx)
+  A console application that uses the PSTParse library to extract all messages (including attachments) from a PST mailstore,
+  and write them to a set of folders and files that match the folder structure within the PST.
+  
+## Usage
+```
+PSTExtractor [PATH_TO_PST] [OUTPUT_FOLDER]
+```
+
+## Example
+
+  If a PST file named TEST.pst that is located in the C:\outlook folder has the following structure:
+```
+  MyPST (root)
+    Archive (folder)
+	  Old message 1 from Mike at 5/30/2024 09:00AM (email with one .JPG attachment)
+	  Old message 2 from Bob at 5/31/2024 01:30PM (email)
+	ToDo (folder)
+	  Birthday list from Betty at 5/20/2024 5:15PM (email with two .XLSX attachments)
+	New resume from Lisa at 5/25/2024 7:30AM (email)  
+```
+
+  then running the following command 
+  
+```
+PSTExtractor C:\outlook\TEST.pst c:\PST
+```
+
+  will create the following folders and files
+
+```
+  C:\PST
+    C:\PST\MyPST
+      C:\PST\MyPST\Top of Personal folders
+        20240525-0730-Lisa-New resume.txt
+        C:\PST\MyPST\Top of Personal folders\Archive
+          20240530-0900-Mike-Old message 1.txt
+          20240531-1330-Bob-Old message 2.txt
+          C:\PST\MyPST\Top of Personal folders\Archive\attachments
+            C:\PST\MyPST\Top of Personal folders\Archive\attachments\20240530-0900-Mike-Old message 1
+              image.JPG
+        C:\PST\MyPST\Top of Personal folders\ToDo
+          20240520-1715-Betty-Birthday list.txt
+          C:\PST\MyPST\Top of Personal folders\ToDo\attachments
+            C:\PST\MyPST\Top of Personal folders\ToDo\attachments\20240520-1715-Betty-Birthday list
+              List1.XLSX
+              List2.XLSX
+```  
+
+# PSTParse (Original Documentation)
+
+  A library for reading the [PST mailstore file format.](http://msdn.microsoft.com/en-us/library/ff385210(v=office.12).aspx)
 
   This library is intended to be as accurate, fast implementation of the PST mailstore file format specification.  The original motivation for this project came from my experiences with other mailstore libraries that either 1) required Outlook to be installed in order to function or 2) were developed inconsistently by a third party.  Such inconsistencies range from libraries that "missed" items and other libraries that failed when encountering errors.  The intention of this project is to provide a basis to developers of applications that need to read and write to the PST format.
   
