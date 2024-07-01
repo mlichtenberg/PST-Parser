@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 
 Settings settings = ReadCommandLine();
 if (settings.isValid)
@@ -96,7 +98,33 @@ static void RenderMessage(PSTParse.MessageLayer.Message message, string outputFo
         sw.WriteLine("BCC: {0}", String.Join("; ", message.Recipients.BCC.Select(r => string.IsNullOrWhiteSpace(r.DisplayName) ? r.EmailAddress : r.DisplayName)));
     }
     sw.WriteLine();
-    sw.WriteLine(message.BodyPlainText);
+    if (message.BodyHtml != null)
+    {        
+        // Not perfect, but good enough for now
+        var bodyHtml = message.BodyHtml;
+        bodyHtml = bodyHtml
+            .Replace("<br>", "\n")
+            .Replace("<br/>", "\n")
+            .Replace("</p>", "\n\r")
+            .Replace("&amp;", "&")
+            .Replace("&nbsp;", " ")
+            .Replace("&lt;", "<")
+            .Replace("&gt;", ">")
+            .Replace("&quot;", "'");
+        bodyHtml = Regex.Replace(bodyHtml, "(?=<!--)([\\s\\S]*?)-->", string.Empty);   // Remove HTML comments
+        bodyHtml = Regex.Replace(bodyHtml, "<.*?>", string.Empty);  // Remove remaining HTML tags
+        sw.WriteLine(bodyHtml);
+    }
+    else if (message.BodyPlainText != null)
+    {
+        sw.WriteLine(message.BodyPlainText);
+    }
+    else if (message.BodyCompressedRTFString != null)
+    {
+        // TODO:  Convert compressed RTF to plain text
+        // Consider https://stackoverflow.com/questions/5634525/how-to-convert-an-rtf-string-to-text-in-c-sharp
+        sw.WriteLine(message.BodyCompressedRTFString);
+    }
     sw.WriteLine();
 
     // Build the filename for the email message
