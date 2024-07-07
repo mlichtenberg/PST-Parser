@@ -1,4 +1,5 @@
-﻿using PSTParse;
+﻿using PSTExtractor;
+using PSTParse;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -121,9 +122,8 @@ static void RenderMessage(PSTParse.MessageLayer.Message message, string outputFo
     }
     else if (message.BodyCompressedRTFString != null)
     {
-        // TODO:  Convert compressed RTF to plain text
-        // Consider https://stackoverflow.com/questions/5634525/how-to-convert-an-rtf-string-to-text-in-c-sharp
-        sw.WriteLine(message.BodyCompressedRTFString);
+        // Convert compressed RTF to plain text
+        sw.WriteLine(RichTextStripper.StripRichTextFormat(message.BodyCompressedRTFString));
     }
     sw.WriteLine();
 
@@ -134,7 +134,7 @@ static void RenderMessage(PSTParse.MessageLayer.Message message, string outputFo
     var messageFileName = string.Format("{0}\\{1}.txt", outputFolder, fileNameRoot);
 
     // Write the email message to a file
-    if (!File.Exists(messageFileName)) File.AppendAllText(messageFileName, sw.ToString());
+    if (!File.Exists(messageFileName)) File.AppendAllText(messageFileName, sw.ToString(), System.Text.Encoding.UTF8);
 
     // If the email message has attachments, write each of them to a file
     foreach (var attachment in message.Attachments)
